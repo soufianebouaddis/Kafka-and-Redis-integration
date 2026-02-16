@@ -2,10 +2,12 @@ server:
   port: 8081
 
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/order_db
     username: postgres
-    password: 
+    password:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -35,46 +37,40 @@ management:
     metrics:
       enabled: true
 
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    acks: all
+    retries: 3
+    properties:
+      enable.idempotence: true
+      max.in.flight.requests.per.connection: 5
+      compression.type: snappy
 
+  consumer:
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    group-id: order-service-group
+    auto-offset-reset: earliest
+    enable-auto-commit: false
+    properties:
+      spring.json.trusted.packages: "*"
+      isolation.level: read_committed
 
-kafka:
-    bootstrap-servers: localhost:9092
-    
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all
-      retries: 3
-      properties:
-        enable.idempotence: true
-        max.in.flight.requests.per.connection: 5
-        compression.type: snappy
-        
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      group-id: order-service-group
-      auto-offset-reset: earliest
-      enable-auto-commit: false
-      properties:
-        spring.json.trusted.packages: "*"
-        isolation.level: read_committed
-        
-    listener:
-      ack-mode: manual
-      concurrency: 3
-
+  listener:
+    ack-mode: manual
+    concurrency: 3
 
 data:
-    redis:
-      host: localhost
-      port: 6379
-      timeout: 2000ms
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 2
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 2
 
 app:
   kafka:
@@ -85,12 +81,11 @@ app:
       payment-response: payment.response
       order-completed: order.completed
       order-failed: order.failed
-      
   redis:
     cache:
       ttl: 3600
       order-prefix: "order:"
-      
+
 # Resilience4j Circuit Breaker
 resilience4j:
   circuitbreaker:
