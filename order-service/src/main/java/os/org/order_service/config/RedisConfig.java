@@ -1,5 +1,15 @@
 package os.org.order_service.config;
 
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
+import tools.jackson.datatype.jsr310.JavaTimeModule;
+
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -11,19 +21,10 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.*;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.Duration;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RedisConfig {
@@ -52,29 +53,29 @@ public class RedisConfig {
         return factory;
     }
 
-    public com.fasterxml.jackson.databind.ObjectMapper redisValueSerializer() {
-        com.fasterxml.jackson.databind.ObjectMapper  mapper;
-        mapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
-        // 1. Security: Restrict allowed types to prevent RCE
-        BasicPolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfBaseType(Object.class) // Be more restrictive if possible (e.g., your base DTO
-                                               // package(cdm.international.dto))
+    @Bean
+    public ObjectMapper redisObjectMapper() {
+        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType("os.org.orderservice.**")
                 .build();
-
-        mapper.activateDefaultTyping(ptv, com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
-        // 2. Standard Production Java 8+ modules
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        return mapper;
+        return JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .activateDefaultTypingAsProperty(
+                        ptv,
+                        DefaultTyping.NON_FINAL,
+                        "@class"
+                )
+                .build();
     }
+
 
     @Bean
     public RedisSerializer<Object> redisValueSerializer(ObjectMapper redisObjectMapper) {
         return new GenericJacksonJsonRedisSerializer(redisObjectMapper);
     }
+
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(
