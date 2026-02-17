@@ -56,7 +56,7 @@ public class RedisConfig {
     @Bean
     public ObjectMapper redisObjectMapper() {
         PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("os.org.order-service.**")
+                .allowIfSubType("os.org.order_service.**")
                 .build();
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule())

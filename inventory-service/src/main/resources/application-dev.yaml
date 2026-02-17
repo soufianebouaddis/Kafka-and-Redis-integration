@@ -5,9 +5,9 @@ spring:
   application:
     name: inventory-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/inventory_db
+    url: jdbc:postgresql://127.0.0.1:5432/inventory_db
     username: postgres
-    password: postgres
+    password:
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -23,6 +23,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 2
+          max-wait: -1ms
+        shutdown-timeout: 100ms
 
 kafka:
   bootstrap-servers: localhost:9092
@@ -58,23 +70,11 @@ kafka:
     ack-mode: manual
     concurrency: 3
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      timeout: 2000ms
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 2
-          max-wait: -1ms
-        shutdown-timeout: 100ms
+
 
 app:
   kafka:
     topics:
-      # Topics this service CONSUMES  (produced by Order Service)
       order-created: order.created
       order-failed:  order.failed
       inventory-response: inventory.response
