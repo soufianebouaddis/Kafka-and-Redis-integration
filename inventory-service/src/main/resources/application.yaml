@@ -3,3 +3,9 @@ spring:
     name: inventory-service
   profiles:
     active: dev
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none

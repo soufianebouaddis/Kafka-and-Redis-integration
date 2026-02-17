@@ -2,7 +2,6 @@ package os.org.order_service.config;
 
 import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -57,7 +56,7 @@ public class RedisConfig {
     @Bean
     public ObjectMapper redisObjectMapper() {
         PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("os.org.orderservice.**")
+                .allowIfSubType("os.org.order-service.**")
                 .build();
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule())
