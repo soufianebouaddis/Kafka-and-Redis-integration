@@ -15,5 +15,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Override
+    public void createOrder(Object order) {
+        
+    }
 
+    @Override
+    public Object getOrderById(String orderId) {
+        return null;
+    }
+
+    @Override
+    public void updateOrder(Object order) {
+
+    }
+
+    @Override
+    public void deleteOrder(String orderId) {
+
+    }
 }

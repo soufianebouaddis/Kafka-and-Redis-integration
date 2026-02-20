@@ -27,22 +27,18 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Natural business key (e.g. "LAPTOP-001") */
     @Column(nullable = false, unique = true, length = 50)
     private String productId;
 
     @Column(nullable = false, length = 200)
     private String productName;
 
-    /** Total physical stock (reserved + available) */
     @Column(nullable = false)
     private long totalQuantity;
 
-    /** Units currently free to be reserved */
     @Column(nullable = false)
     private long availableQuantity;
 
-    /** Units locked by in-flight orders */
     @Column(nullable = false)
     private long reservedQuantity;
 
@@ -50,7 +46,6 @@ public class Inventory {
     @Column(nullable = false, length = 20)
     private InventoryStatus status;
 
-    /** Reorder alert threshold */
     @Column(nullable = false)
     @Builder.Default
     private long lowStockThreshold = 10;

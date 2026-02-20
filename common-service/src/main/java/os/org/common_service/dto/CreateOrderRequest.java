@@ -31,6 +31,6 @@ public class CreateOrderRequest {
     @Positive(message = "Price must be positive")
     private BigDecimal price;
     
-    private String paymentMethod; // CREDIT_CARD, DEBIT_CARD, PAYPAL, etc.
+    private String paymentMethod;
 }
 

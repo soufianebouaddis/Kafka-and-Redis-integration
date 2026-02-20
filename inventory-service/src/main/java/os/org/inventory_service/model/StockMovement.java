@@ -5,12 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-/**
- * StockMovement
- *
- * Immutable ledger of every quantity change (IN / OUT / ADJUSTMENT).
- * Enables full audit trail and stock reconciliation.
- */
+
 @Entity
 @Table(
         name = "stock_movements",
@@ -37,18 +32,13 @@ public class StockMovement {
     @Column(nullable = false, length = 20)
     private MovementType movementType;
 
-    /**
-     * Positive = stock added (IN / RELEASE).
-     * Negative = stock removed (OUT / RESERVE).
-     */
     @Column(nullable = false)
     private Integer quantityDelta;
 
-    /** Stock level after this movement */
+
     @Column(nullable = false)
     private Integer quantityAfter;
 
-    /** orderNumber, refundId, manualAdjustmentId, etc. */
     @Column(length = 100)
     private String referenceId;
 

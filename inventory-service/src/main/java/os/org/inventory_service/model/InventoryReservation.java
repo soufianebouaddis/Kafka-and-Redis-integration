@@ -32,15 +32,12 @@ public class InventoryReservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** FK to Inventory.productId (logical, not a JPA @ManyToOne to stay loosely coupled) */
     @Column(nullable = false, length = 50)
     private String productId;
 
-    /** The order that created this reservation */
     @Column(nullable = false, unique = true, length = 50)
     private String orderNumber;
 
-    /** Quantity locked for this order */
     @Column(nullable = false)
     private Integer quantity;
 
@@ -54,7 +51,6 @@ public class InventoryReservation {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    /** When the reservation was released / confirmed */
     private LocalDateTime resolvedAt;
 
     @PrePersist

@@ -13,6 +13,9 @@ target/
 .springBeans
 .sts4-cache
 
+### ignore bypassPoliciesCommand.txt & runEnvironment.ps1
+bypassPoliciesCommand.txt
+runEnvironment.ps1
 ### IntelliJ IDEA ###
 .idea
 *.iws

@@ -18,11 +18,11 @@ public class InventoryEvent implements Serializable {
     private String orderNumber;
     private Integer quantity;
     private Integer availableQuantity;
-    private InventoryEventType eventType;
+    private EventType eventType;
     private LocalDateTime eventTimestamp;
     private String failureReason;
     
-    public enum InventoryEventType {
+    public enum EventType  {
         RESERVATION_REQUESTED,
         RESERVATION_CONFIRMED,
         RESERVATION_FAILED,
