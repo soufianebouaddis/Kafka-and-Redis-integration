@@ -13,21 +13,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryEvent implements Serializable {
-    private Long inventoryId;
+    private long inventoryId;
     private String productId;
     private String orderNumber;
-    private Integer quantity;
-    private Integer availableQuantity;
+    private long quantity;
+    private long availableQuantity;
+    private long quantityRequested;
     private EventType eventType;
+    private long availableAfter;
     private LocalDateTime eventTimestamp;
     private String failureReason;
     
-    public enum EventType  {
-        RESERVATION_REQUESTED,
-        RESERVATION_CONFIRMED,
-        RESERVATION_FAILED,
-        RESERVATION_RELEASED,
-        STOCK_UPDATED,
-        LOW_STOCK_ALERT
-    }
+
 }

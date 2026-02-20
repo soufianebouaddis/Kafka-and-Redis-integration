@@ -40,7 +40,7 @@ public class InventoryCacheServiceImpl implements InventoryCacheService {
         this.stringRedisTemplate = stringRedisTemplate;
     }
     @Override
-    public void seedStockCounter(String productId, int availableQty) {
+    public void seedStockCounter(String productId, long availableQty) {
         String key = stockKey(productId);
         try {
             stringRedisTemplate.opsForValue()

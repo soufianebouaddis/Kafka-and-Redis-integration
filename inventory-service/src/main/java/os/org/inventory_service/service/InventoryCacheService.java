@@ -5,7 +5,7 @@ import os.org.inventory_service.model.Inventory;
 import java.util.Optional;
 
 public interface InventoryCacheService {
-    void seedStockCounter(String productId, int availableQty);
+    void seedStockCounter(String productId, long availableQty);
     Optional<Integer> getStockCounter(String productId);
     Long decrementStock(String productId, int qty);
     Long incrementStock(String productId, int qty);

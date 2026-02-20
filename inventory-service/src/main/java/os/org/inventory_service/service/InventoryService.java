@@ -18,8 +18,8 @@ public interface InventoryService {
     Inventory addStock(String productId, int qty, String notes);
     InventoryEvent dbReserve(OrderEvent order, String lockValue);
     void journalMovement(String productId, MovementType type,
-                         int delta, int after, String refId, String notes);
+                         long delta, long after, String refId, String notes);
     InventoryEvent buildEvent(OrderEvent order, InventoryEvent.EventType type,
-                             Integer availableAfter, String failure);
+                             long availableAfter, String failure);
     InventoryEvent publishAndReturn(InventoryEvent event);
 }

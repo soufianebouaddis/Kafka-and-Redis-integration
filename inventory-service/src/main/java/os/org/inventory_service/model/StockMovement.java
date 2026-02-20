@@ -33,11 +33,11 @@ public class StockMovement {
     private MovementType movementType;
 
     @Column(nullable = false)
-    private Integer quantityDelta;
+    private long quantityDelta;
 
 
     @Column(nullable = false)
-    private Integer quantityAfter;
+    private long quantityAfter;
 
     @Column(length = 100)
     private String referenceId;
